@@ -2,6 +2,26 @@ import React, { Component } from 'react';
 import Identicon from 'identicon.js';
 
 class Main extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+        eth: "0.1",
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.isNumber = this.isNumber.bind(this);
+  }
+
+  isNumber(data) {
+    return !isNaN(data);
+  }
+
+  handleChange = (e) => {
+    if (!this.isNumber(e.target.value)) return;
+    this.setState({
+        eth: e.target.value,
+    });
+  };
 
   render() {
     return (
@@ -55,13 +75,22 @@ class Main extends Component {
                           className="btn btn-link btn-sm float-right pt-0"
                           name={image.id}
                           onClick={(event) => {
-                            let tipAmount = window.web3.utils.toWei('0.1', 'Ether')
+                            let tipAmount = window.web3.utils.toWei(this.state.eth, 'Ether')
                             console.log(event.target.name, tipAmount)
                             this.props.tipImageOwner(event.target.name, tipAmount)
                           }}
                         >
-                          TIP 0.1 ETH
+                          TIP {this.state.eth} ETH
                         </button>
+                        <input
+                          className="float-right"
+                          style={{"text-align": "right"}}
+                          id="tip_eth"
+                          name="tip_eth"
+                          placeholder="Input tip eth"
+                          size="8"
+                          onChange={this.handleChange}
+                        />
                       </li>
                     </ul>
                   </div>
